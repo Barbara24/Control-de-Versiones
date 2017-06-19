@@ -1,0 +1,28 @@
+  public void Guardararchivo(String comando,String[] datos,Map<String,ArrayList<String>> dic) throws IOException{
+      if (datos.length==0){
+          try{
+              Formatter archivo = new Formatter("opermat2017.txt");
+              archivo.format("%s", dic);
+              archivo.close();
+              miImpresor.ImprimirGuardar();
+          }
+          catch(Exception e){
+              System.out.println((char)27 + "[31mError al abrie el archivo" + (char)27 + "[0m");
+          }
+    }
+      else if (datos.length==1){
+          try{
+              Formatter archivo = new Formatter(datos[0]);
+              archivo.format("%s", dic);
+              archivo.close();
+              miImpresor.ImprimirGuardar();
+          }
+          catch(Exception e){
+              System.out.println((char)27 + "[31mError al abrie el archivo" + (char)27 + "[0m");
+          } 
+          
+      }
+      else{
+           System.out.println((char)27 + "[31mEl comando no existe" + (char)27 + "[0m");     
+      }
+  }
