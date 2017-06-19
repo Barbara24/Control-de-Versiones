@@ -1,0 +1,82 @@
+public void expresionAlgebraica(ArrayList<String> postfija,Map<String,ArrayList<String>> dic, Map<String,ArrayList<ArrayList<Integer>>> dicaux){
+int i;
+           for (i=0;i<postfija.size();i++){
+               String str=postfija.get(i);
+               char c=str.charAt(0);
+               if ((Character.isAlphabetic(c))||(Character.isWhitespace(c))){
+               }
+               else{
+                   if(postfija.size()==5){
+                       realizarOperacion(postfija.get(4),postfija.get(0),postfija.get(2),dic,dicaux,3);
+                       break;
+                   }
+                   else{
+                       realizarOperacion(postfija.get(i),postfija.get(i-4),postfija.get(i-2),dic,dicaux,0);
+                       String n1 = postfija.get(0);
+                       String naux = "aux";
+                       ArrayList<String> nuevapost;
+                       nuevapost=new ArrayList<>();
+                       nuevapost.add(n1);
+                       nuevapost.add(" ");
+                       nuevapost.add(naux);
+                       int k;
+                       for (k=i+1;k<postfija.size();k++){
+                           nuevapost.add(postfija.get(k));
+                       }
+                       expresionAlgebraica(nuevapost,dic,dicaux);
+                       break;
+                   }
+               }
+           }
+           
+    }
+    public void realizarOperacion(String op,String m1,String m2,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Matriz miMatriz;
+        miMatriz=new Matriz();
+        System.out.println("llega a las operaciones");
+        switch (op){
+            case "+":
+                if ("aux".equals(m2)){
+                    miMatriz.sumaAux(m1, m2, dic, dicaux,imp);
+                    break;
+                }
+                else{
+                    System.out.println("estoy aqui");
+                   miMatriz.sumaMatrizop(m1, m2, dic, dicaux);
+                   break;
+                }
+            case "-":
+                if ("aux".equals(m2)){
+                    miMatriz.restaAux(m1, m2, dic, dicaux,imp);
+                    break;
+                }
+                else{
+                   System.out.println("estoy aqui 2");
+                   miMatriz.restaMatrizop(m1, m2, dic, dicaux);
+                   break;
+                }
+            case "*":
+                if ("aux".equals(m2)){
+                    miMatriz.multiplicacionaux(m1, m2, dic, dicaux,imp);
+                    break;
+                }
+                else{
+                    System.out.println("estoy aqui 3");
+                   miMatriz.multiplicaMatrizop(m1, m2, dic, dicaux);
+                   break;
+                }
+            case "^":
+                if ("aux".equals(m2)){
+                    miMatriz.exponenciacionauz(m1, m2, dic, dicaux,imp);
+                    break;
+                }
+                else{
+                    System.out.println("estoy aqui 4");
+                   miMatriz.exponenciacionMatrizop(m1, m2, dic, dicaux);
+                   break;
+                }
+            default:
+                System.out.println((char)27 + "[31mEl operando no existe" + (char)27 + "[0m");
+        }
+                
+    }
