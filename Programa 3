@@ -1,0 +1,939 @@
+#Programa 3
+from tkinter import *
+from tkinter import messagebox
+import winsound
+import sys
+import pickle
+import random
+import os
+
+#Ventana Principal
+winsound.PlaySound("intro",winsound.SND_ALIAS)
+x=Tk()
+x.title("OPERMAT")
+x.geometry("960x650+250+80")
+Label(x,bg="#00d8d4",width=960,height=650).place(x=-3,y=-2)
+Label(x,text="OPERMAT:Operaciones sobre Matrices",bg="#00d8d4",fg="white",font="Helvetica 32").place(x=10,y=10)
+#Scrollbar en la ventana ventana principal
+scrollbar=Scrollbar(x)
+scrollbar.pack(side=RIGHT,fill=Y)
+scrollbar2=Scrollbar(x)
+scrollbar2.pack(side=BOTTOM,fill=X)
+
+global imprimir
+imprimir=False
+os.remove("imprimir.txt")
+archivoimp=open("imprimir.txt","wb")
+archivoimp.close()
+os.remove("opermat2017.txt")
+archivoimp=open("opermat2017.txt","wb")
+archivoimp.close()
+
+##Funcion Enter
+def enter(entradas):
+    global campoTexto
+    global entrada
+    global imprimir
+    entrada=entrada.get()
+    print(entrada)
+    campoTexto.insert(END,"\n{0}".format(entrada))
+    if imprimir==True:
+        imp=open("imprimir.txt","ab")
+        pickle.dump(entrada,imp)
+    else:
+        pass 
+    entrada=entrada.split(" ")
+    entr=entrada[0]
+    arch=open("matrices.txt","rb")
+    dic=pickle.load(arch)
+    llaves=dic.keys()
+    print(entr)
+    if entr=="finalizar":
+        campoTexto.insert(END,"\n{0}".format(entr))
+        return finalizar()
+    
+    elif entr=="fin":
+        campoTexto.insert(END,"\n{0}".format(entr))
+        return finalizar()
+    
+    elif entr=="matrizaleatoriaenteros":
+        campoTexto.insert(END,"\n{0}".format(entr))
+        nom=entrada[1]
+        m1=int(entrada[2])
+        n1=int(entrada[4])
+        respuesta=matrizaleatoriaenteros(nom,m1,n1)
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(respuesta,imp)
+        else:
+            pass       
+        for i in respuesta:
+            campoTexto.insert(END,"\n".format(i))
+            for e in i:
+                campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    elif entr=="mae":
+        campoTexto.insert(END,"\n{0}".format(entr))
+        nom=entrada[1]
+        m1=int(entrada[2])
+        n1=int(entrada[4])
+        respuesta=mae(nom,m1,n1)
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(respuesta,imp)
+        else:
+            pass 
+        for i in respuesta:
+            campoTexto.insert(END,"\n".format(i))
+            for e in i:
+                campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    elif entr=="matrizaleatoriaflotantes":
+        campoTexto.insert(END,"\n{0}".format(entr))
+        nom=entrada[1]
+        m1=int(entrada[2])
+        n1=int(entrada[4])
+        respuesta=matrizaleatoriaflotantes(nom,m1,n1)
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(respuesta,imp)
+        else:
+            pass 
+        for i in respuesta:
+            campoTexto.insert(END,"\n".format(i))
+            for e in i:
+                campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    elif entr=="maf":
+        campoTexto.insert(END,"\n{0}".format(entr))
+        nom=entrada[1]
+        m1=int(entrada[2])
+        n1=int(entrada[4])
+        respuesta=maf(nom,m1,n1)
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(respuesta,imp)
+        else:
+            pass 
+        for i in respuesta:
+            campoTexto.insert(END,"\n".format(i))
+            for e in i:
+                campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    elif entr=="acercade" or entr=="ace":
+        campoTexto.insert(END,"\n{0}".format(entr))
+        b=acercade()
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(b,imp)
+        else:
+            pass 
+        w=b[0]
+        y=b[1]
+        z=b[2]
+        a=b[3]
+        campoTexto.insert(END, "\n{0},\n{1},\n{2},\n{3}".format(w,y,z,a))     
+        
+    elif entr=="lee" or entr=="leer":
+        resultado=lee(entrada[1],entrada[2:])
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(resultado,imp)
+        else:
+            pass 
+        if revisar(resultado)!=True:
+            entrada=StringVar()
+            entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+            entry.place(x=75,y=100)
+            entry.bind("<Return>",enter)
+            campoTexto.tag_config("a",foreground="red")
+            campoTexto.insert(END,"\nError: La matriz tiene que tener la misma cantidad de columnas por fila",("a"))
+        else:
+            matr=Matriz(entrada[1],resultado)
+            campoTexto.insert(END, "\n {0}".format(entr))
+            campoTexto.insert(END, "\n {0}".format(entrada[1]))
+            for i in resultado:
+                i=i.split(",")
+                campoTexto.insert(END,"\n".format(i))
+                for e in i:
+                    e=int(e)
+                    campoTexto.insert(END,"\t{0}".format(e))
+            entrada=StringVar()
+            entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+            entry.place(x=75,y=100)
+            entry.bind("<Return>",enter)
+            
+    elif len(entrada)==1:
+        if entr in llaves:
+            resultado=dic[entr]
+            if imprimir==True:
+                imp=open("imprimir.txt","ab")
+                pickle.dump(resultado,imp)
+            else:
+                pass 
+            for i in resultado:
+                i=i.split(",")
+                campoTexto.insert(END,"\n".format(i))
+                for e in i:
+                    e=int(e)
+                    campoTexto.insert(END,"\t{0}".format(e))
+        else:
+            campoTexto.tag_config("a",foreground="red")
+            campoTexto.insert(END,"\nError: La matriz no existe",("a"))
+            
+        
+    elif entr=="guardararchivo" or entr=="guaarc":
+        if imprimir==True:
+            respuesta="El archivo se guardó correctamente"
+            imp=open("imprimir.txt","ab")
+            pickle.dump(respuesta,imp)
+        else:
+            pass 
+        if len(entrada)==1:
+            guardararchivo()
+            campoTexto.tag_config("a",foreground="blue")
+            campoTexto.insert(END,"\nEl archivo se guardó correctamente",("a"))
+        else:
+            guardararchivo(entrada[1])
+            campoTexto.tag_config("a",foreground="blue")
+            campoTexto.insert(END,"\nEl archivo se guardó correctamente",("a"))
+            
+    elif entr=="leerarchivo" or entr=="leearc":
+        if len(entrada)==1:
+            guardado=leerarchivo()
+            if imprimir==True:
+                imp=open("imprimir.txt","ab")
+                pickle.dump(guardado,imp)
+            else:
+                pass 
+            for i in guardado:
+                campoTexto.insert(END,"\n{0}".format(i))
+                for e in guardado[i]:
+                    e=e.split(",")
+                    campoTexto.insert(END,"\n".format(e))
+                    for j in e:
+                        j=int(j)
+                        campoTexto.insert(END,"\t{0}".format(e))
+            
+        else:
+            guardado=leerarchivo(entrada[1])
+            if imprimir==True:
+                imp=open("imprimir.txt","ab")
+                pickle.dump(guardado,imp)
+            else:
+                pass 
+            for i in guardado:
+                campoTexto.insert(END,"\n{0}".format(i))
+                for e in guardado[i]:
+                    e=e.split(",")
+                    campoTexto.insert(END,"\n".format(e))
+                    for j in e:
+                        j=int(j)
+                        campoTexto.insert(END,"\t{0}".format(e))
+
+    elif entr=="sumaMatriz":
+        resultado=sumaMatriz(entrada[1],entrada[2])
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(resultado,imp)
+        else:
+            pass 
+        if isinstance(resultado,list):
+            for i in resultado:
+                campoTexto.insert(END,"\n".format(i))
+                for e in i:
+                    e=int(e)
+                    campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    elif entr=="restaMatriz":
+        resultado=restaMatriz(entrada[1],entrada[2])
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(resultado,imp)
+        else:
+            pass 
+        if isinstance(resultado,list):
+            for i in resultado:
+                campoTexto.insert(END,"\n".format(i))
+                for e in i:
+                    e=int(e)
+                    campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+
+    elif entr=="multiplicaMatriz":
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(resultado,imp)
+        else:
+            pass 
+        resultado=multiplicaMatriz(entrada[1],entrada[2])
+        if isinstance(resultado,list):
+            for i in resultado:
+                campoTexto.insert(END,"\n".format(i))
+                for e in i:
+                    e=int(e)
+                    campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    elif entr=="exponenciacionMatriz":
+        resultado=exponenciacionMatriz(entrada[1],int(entrada[2]))
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(resultado,imp)
+        else:
+            pass 
+        if isinstance(resultado,list):
+            for i in resultado:
+                campoTexto.insert(END,"\n".format(i))
+                for e in i:
+                    e=int(e)
+                    campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    elif entr=="operacionprogra":
+        resultado=operacionprogra(entrada[1],entrada[2])
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(resultado,imp)
+        else:
+            pass 
+        if isinstance(resultado,list):
+            for i in resultado:
+                campoTexto.insert(END,"\n".format(i))
+                for e in i:
+                    e=int(e)
+                    campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    elif entr=="imprimir" or entr=="imp":
+        campoTexto.tag_config("a",foreground="blue")
+        campoTexto.insert(END,"\nImpresión activada.",("a"))
+        imprimir=True
+        
+    elif entr=="noimprimir" or entr=="noi":
+        campoTexto.tag_config("a",foreground="blue")
+        campoTexto.insert(END,"\nImpresión desactivada.",("a"))
+        imprimir=False
+        os.startfile("imprimir.txt")
+               
+    elif entr=="ayuda" or entr=="ayu":
+        print(entrada)
+        if len(entrada)==1:
+            os.startfile("Bárbara_Gutiérrez_Quirós manual_de_usuario_opermat.pdf")
+        else:
+            if entrada[1]== "finalizar" or entrada[1]=="fin":
+                os.startfile("Finalizar.pdf")
+            elif entrada[1]=="leer" or entrada[1]=="lee":
+                os.startfile("Leer.pdf")
+            elif entrada[1]=="leerarchivo" or entrada[1]=="leearc":
+                os.startfile("Leer_archivo.pdf")
+            elif entrada[1]=="guardararchivo" or entrada[1]=="guaarc":
+                os.startfile("Guardar_archivo.pdf")
+            elif entrada[1]=="nombrematriz":
+                os.startfile("Nombre_m.pdf")
+            elif entrada[1]=="matrizaleatoriaenteros" or entrada[1]=="mae":
+                os.startfile("mae.pdf")    
+            elif entrada[1]=="matrizaleatoriaflotantes" or entrada[1]=="maf":
+                os.startfile("maf.pdf")
+            elif entrada[1]=="operacionprogra":
+                os.startfile("opprogra.pdf")
+            elif entrada[1]=="acercade" or entrada[1]=="ace":
+                os.startfile("ace.pdf")
+            else:
+                campoTexto.tag_config("a",foreground="red")
+                campoTexto.insert(END,"\nError: La función que se desea buscar no existe",("a"))
+                
+    else:
+        resultado=inf_post(entrada)
+        arch=open
+        if imprimir==True:
+            imp=open("imprimir.txt","ab")
+            pickle.dump(aux,imp)
+        else:
+            pass 
+        if isinstance(resultado,list):
+            for i in resultado:
+                campoTexto.insert(END,"\n".format(i))
+                for e in i:
+                    e=int(e)
+                    campoTexto.insert(END,"\t{0}".format(e))
+        entrada=StringVar()
+        entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+        entry.place(x=75,y=100)
+        entry.bind("<Return>",enter)
+        
+    entrada=StringVar()
+    entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+    entry.place(x=75,y=100)
+    entry.bind("<Return>",enter)
+   
+#####Agregar entry y cuadro de texto########
+Label(x,text="cmd→",bg="#00d8d4",fg="white",font="Hervetica 16").place(x=10,y=100)
+global entrada
+entrada=StringVar()
+entry=Entry(x,font="Hervetica 16",textvariable=entrada,width=50)
+entry.place(x=75,y=100)
+entry.bind("<Return>",enter)
+textBoxFrame = Frame(x)
+textBoxFrame.place(x=50,y=150)
+scrollbar1 = Scrollbar(textBoxFrame);
+scrollbar1.pack( side = RIGHT, fill=Y )
+global campoTexto
+campoTexto = Text(textBoxFrame, width=100, height=25, yscrollcommand = scrollbar1.set)
+campoTexto.pack()   
+scrollbar1.config(command = campoTexto.yview)
+
+
+#Escoger funcion####
+
+##Matriz##
+class Matriz:
+    def __init__(self,n,v):
+        self.nombre=n
+        self.valores=v
+        leerarch=open("matrices.txt","rb")
+        dic=pickle.load(leerarch)
+        llaves=dic.keys()
+        if n in llaves:
+            arch=open("matrices.txt","wb")
+            dic=dic
+            dic[self.nombre]= self.valores
+            pickle.dump(dic,arch)
+            arch.close()
+        else:
+            dic[self.nombre]=self.valores
+            arch=open("matrices.txt","wb")
+            pickle.dump(dic,arch)
+            arch.close()
+
+            
+#Operaciones
+def sumaMatriz(matriz1,matriz2):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves and matriz2 in llaves:
+        return suma_matrices(stringint(cargado[matriz1]),stringint(cargado[matriz2]))
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+
+def restaMatriz(matriz1,matriz2):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves and matriz2 in llaves:
+        return resta_matrices(stringint(cargado[matriz1]),stringint(cargado[matriz2]))
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+
+def multiplicaMatriz(matriz1,matriz2):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves and matriz2 in llaves:
+        return multiplica_matrices(stringint(cargado[matriz1]),stringint(cargado[matriz2]))
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+
+def exponenciacionMatriz(matriz1,exponente):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves:
+        return exponenciacion(stringint(cargado[matriz1]),exponente)
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+
+def operacionprogra(matriz1,forma):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves:
+        return ordenamatriz(stringint(cargado[matriz1]),forma)
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+    
+##Suma    
+def suma_matrices(m1,m2):
+    if len(m1)==len(m2) and len(m1[0])==len(m2[0]):
+        return suma_matrices1(m1,m2,0)
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: Las matrices tienen que ser de igual tamaño",("a"))
+
+def suma_matrices1(m1,m2,cont):
+    if cont>(len(m1)-1):
+        return []
+    else:
+        return [suma(m1[cont],m2[cont],0)]+suma_matrices1(m1,m2,cont+1)
+
+def suma(l1,l2,cont):
+    if cont>(len(l1)-1):
+        return []
+    else:
+        return [l1[cont]+l2[cont]]+suma(l1,l2,cont+1)
+    
+##Resta                             
+def resta_matrices(m1,m2):
+    if len(m1)==len(m2) and len(m1[0])==len(m2[0]):
+        return resta_matrices1(m1,m2,0)
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: Las matrices tienen que ser de igual tamaño",("a"))
+def resta_matrices1(m1,m2,cont):
+    if cont>(len(m1)-1):
+        return []
+    else:
+        return [resta(m1[cont],m2[cont],0)]+resta_matrices1(m1,m2,cont+1)
+
+def resta(l1,l2,cont):
+    if cont>(len(l1)-1):
+        return []
+    else:
+        return [l1[cont]-l2[cont]]+resta(l1,l2,cont+1)
+                               
+##Multiplica
+def multiplica_matrices(m1,m2):
+    if len(m2)==len(m1[0]):
+        return multiplica_matrices_aux(m1,m2,0)
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError",("a"))
+
+def multiplica_matrices_aux(m1,m2,contf):
+    if contf==len(m1):
+        return []
+    else:
+        return [multiplica(m1[contf],m2,0)]+multiplica_matrices_aux(m1,m2,contf+1)
+
+def multiplica(l1,m2,contc):
+    if contc==len(m2[0]):
+        return []
+    else:
+        return [agregar_lista(l1,m2,0,contc)]+multiplica(l1,m2,contc+1)
+
+def agregar_lista(l1,m2,contf,contc):
+    if contf==len(m2):
+        return 0
+    else:
+        return l1[contf]*m2[contf][contc]+ agregar_lista(l1,m2,contf+1,contc)
+
+##Exponenciacion    
+def exponenciacion(matriz,exponente):
+    if revisar(matriz)==True:
+        if matriz==[]:
+            return []
+        else:
+            return [repasarmatriz(matriz[0],exponente)]+exponenciacion(matriz[1:],exponente)
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz tiene que tener la misma cantidad de columnas por fila",("a")) 
+
+def repasarmatriz(lista,exponente):
+    if lista==[]:
+        return []
+    else:
+        return [lista[0]**exponente]+repasarmatriz(lista[1:],exponente)
+
+##Funcion fin
+def finalizar():
+    winsound.PlaySound("SystemHand",winsound.SND_ALIAS)
+    msj=messagebox.askyesno(title="Salir", message="¿Está seguro que desea salir?")
+    if msj==True:
+        x.destroy()
+
+##Funcion lee
+def lee(nombre,matriz):
+    if len(matriz)==1:
+        return []
+    else:
+        return [matriz[0]]+lee(nombre,matriz[1:])
+
+##Funcion leer archivo
+def leerarchivo(archivo="opermat2017.txt"):
+    archguardado=open(archivo,"rb")
+    guardado=pickle.load(archguardado)
+    return guardado
+
+#Funcion guardar matrices 
+def guardararchivo(archivo="opermat2017.txt"):
+    arch=open(archivo,"wb")
+    arch2=open("matrices.txt","rb")
+    arch2leer=pickle.load(arch2)
+    pickle.dump(arch2leer,arch)
+    arch.close()
+    arch2.close()
+       
+    
+##Matriz aleatoria
+def matrizaleatoriaenteros(nombre,m,n,contm=0):
+    if contm==m:
+        campoTexto.insert(END,"\n{0}".format(nombre))
+        return []
+    else:
+        return [matrizaleatoriaaux(n)]+matrizaleatoriaenteros(nombre,m,n,contm+1)
+
+def matrizaleatoriaaux(n,contn=0):
+    if contn==n:
+        return []
+    else:
+        return [random.randint(0,1234567890)]+matrizaleatoriaaux(n,contn+1)
+
+##Matriz aleatoria
+def mae(nombre,m,n,contm=0):
+    if contm==m:
+        campoTexto.insert(END,"\n{0}".format(nombre))
+        return []
+    else:
+        return [matrizaleatoriaauxe(n)]+mae(nombre,m,n,contm+1)
+
+def matrizaleatoriaauxe(n,contn=0):
+    if contn==n:
+        return []
+    else:
+        return [random.randint(0,1234567890)]+matrizaleatoriaauxe(n,contn+1)
+
+##Matriz aleatoria flotantes
+def matrizaleatoriaflotantes(nombre,m,n,contm=0):
+    if contm==m:
+        campoTexto.insert(END,"\n{0}".format(nombre))
+        return []
+    else:
+        return [matrizaleatoriaauxf(n)]+matrizaleatoriaflotantes(nombre,m,n,contm+1)
+
+def matrizaleatoriaauxf(n,contn=0):
+    if contn==n:
+        return []
+    else:
+        return [random.uniform(0,1234567890)]+matrizaleatoriaauxf(n,contn+1)
+
+##Matriz aleatoria flotantes
+def maf(nombre,m,n,contm=0):
+    if contm==m:
+        campoTexto.insert(END,"\n{0}".format(nombre))
+        return []
+    else:
+        return [matrizaleatoriaauxff(n)]+maf(nombre,m,n,contm+1)
+
+def matrizaleatoriaauxff(n,contn=0):
+    if contn==n:
+        return []
+    else:
+        return [random.uniform(0,1234567890)]+matrizaleatoriaauxff(n,contn+1)
+    
+##Operacion definida por programador
+def ordenamatriz(matriz,forma):
+    if revisar(matriz)==True:
+        if isinstance(matriz,list):
+            if forma=="ascendente" or forma=="asc":
+                return ordenamatrizasc(matriz,[],len(matriz[0]))
+            elif forma=="descendente" or forma=="desc":
+                return ordenamatrizdesc(matriz,[],len(matriz[0]))
+            else:
+                campoTexto.tag_config("a",foreground="red")
+                campoTexto.insert(END,"\nError: Forma no existe",("a")) 
+        else:
+            campoTexto.tag_config("a",foreground="red")
+            campoTexto.insert(END,"\nError: La matriz no es una lista",("a")) 
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz tiene que tener la misma cantidad de columnas por fila",("a")) 
+    
+##Ascendente
+def ordenamatrizasc(matriz,f,l):
+    if matriz==[]:
+        f=ordenarasc(f)
+        return agrupar(f,l)
+    else:
+        return ordenamatrizasc(matriz[1:],f+formarlista(matriz[0],[]),l)
+
+def formarlista(lista,n):
+    if lista==[]:
+        return n
+    else:
+        return formarlista(lista[1:],n+[lista[0]])
+
+def ordenarasc(lista,cont=0,n=[]):
+    if cont==len(lista):
+        return n
+    else:
+        return ordenarasc(lista,cont+1,revisaorden(n,lista[cont]))
+
+def revisaorden(lista,num,cont=0):
+    if lista==[]:
+        return [num]
+    else:
+        if cont==len(lista):
+            if num in lista:
+                return lista
+            else:
+                return lista+[num]
+        else:
+            if num<=lista[cont]:
+                lista.insert(cont,num)
+                return lista
+            else:
+                return revisaorden(lista,num,cont+1)
+
+def agrupar(lista,tam,cont=0,f=[],l=[]):
+    if lista==[]:
+        return f+[l]
+    else:
+        if cont==tam:
+            cont=0
+            return agrupar(lista,tam,cont,f+[l],l=[])
+        else:
+            l+=[lista[0]]
+            return agrupar(lista[1:],tam,cont+1,f,l)
+        
+##Descendente                
+def ordenamatrizdesc(matriz,f,l):
+    if matriz==[]:
+        f=ordenardesc(f)
+        return agrupar(f,l)
+    else:
+        return ordenamatrizdesc(matriz[1:],f+formarlistad(matriz[0],[]),l)
+
+def formarlistad(lista,n):
+    if lista==[]:
+        return n
+    else:
+        return formarlistad(lista[1:],n+[lista[0]])
+
+def ordenardesc(lista,cont=0,n=[]):
+    if cont==len(lista):
+        return n
+    else:
+        return ordenardesc(lista,cont+1,revisaordend(n,lista[cont]))
+
+def revisaordend(lista,num,cont=0):
+    if lista==[]:
+        return [num]
+    else:
+        if cont==len(lista):
+            if num in lista:
+                return lista
+            else:
+                return lista+[num]
+        else:
+            if num>=lista[cont]:
+                lista.insert(cont,num)
+                return lista
+            else:
+                return revisaordend(lista,num,cont+1)
+
+def agrupard(lista,tam,cont=0,f=[],l=[]):
+    if lista==[]:
+        return f+[l]
+    else:
+        if cont==tam:
+            cont=0
+            return agrupard(lista,tam,cont,f+[l],l=[])
+        else:
+            l+=[lista[0]]
+            return agrupard(lista[1:],tam,cont+1,f,l)
+        
+##Expresiones
+def inf_post(lista,pila=[]):
+    final=[]
+    while lista!=[]:
+        if lista[0].isalpha()==True:
+            final+=lista[0]
+        if lista[0]=="+" or lista[0]=="-" or lista[0]=="*" or lista[0]=="/" or lista[0]=="**" or lista[0]=="(":
+            if pila:
+                dato=pila.pop()
+                while PDP(dato)>=PFP(lista[0]) and pila>=PFP(lista[0]):
+                    final+=dato
+                    dato=pila.pop()
+                pila.append(dato)
+                pila.append(lista[0])
+            else:
+                pila.append(lista[0])
+        if lista[0]==")":
+            if pila:
+                dato=pila.pop()
+                while dato!="(" and pila!="(":
+                    final+=dato
+                    dato=pila.pop()
+        lista=lista[1:]
+    while pila:
+        final+=pila.pop()
+    return operacion(final)
+
+def PDP(dato):
+    if dato=="+" or dato=="-":
+        return 1
+    elif dato=="*" or dato=="/":
+        return 2
+    elif dato=="**":
+        return 3
+    else:
+        return 0
+
+def PFP(dato):
+    if dato=="+" or dato=="-":
+        return 1
+    elif dato=="*" or dato=="/":
+        return 2
+    else:
+        return 4
+
+def operacion(lista,cont=0):
+    if lista[cont].isalpha()==True:
+        return operacion(lista,cont+1)
+    else:
+        if len(lista)==3:
+            return realizar_operacion(lista[2],lista[0],lista[1])
+        else:
+            mat=Matriz("aux",realizar_operacion(lista[cont],lista[cont-2],lista[cont-1]))
+            lista=[lista[0]]+["aux"]+lista[cont+1:]
+            print (lista)
+            return operacion(lista,cont=0)
+
+def realizar_operacion(operando,matriz1,matriz2):
+    if operando=="+":
+        return sumaMatrizpre(matriz1,matriz2)
+    elif operando=="-":
+        return restaMatrizpre(matriz1,matriz2)
+    elif operando=="*":
+        return multiplicaMatrizpre(matriz1,matriz2)
+    elif operando=="^":
+        return exponenciacionMatrizpre(matriz1,matriz2)
+    
+#Operaciones
+def sumaMatrizpre(matriz1,matriz2):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves and matriz2 in llaves:
+        if matriz2=="aux":
+            return suma_matrices(stringint(cargado[matriz1]),cargado[matriz2])
+        else:
+            return suma_matrices(stringint(cargado[matriz1]),stringint(cargado[matriz2]))
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+
+def restaMatrizpre(matriz1,matriz2):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves and matriz2 in llaves:
+        if matriz2=="aux":
+            return resta_matrices(stringint(cargado[matriz1]),cargado[matriz2])
+        else:
+            return resta_matrices(stringint(cargado[matriz1]),stringint(cargado[matriz2]))
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+
+def multiplicaMatrizpre(matriz1,matriz2):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves and matriz2 in llaves:
+        if matriz2=="aux":
+            return multiplica_matrices(stringint(cargado[matriz1]),cargado[matriz2])
+        else:
+            return multiplica_matrices(stringint(cargado[matriz1]),stringint(cargado[matriz2]))
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+
+def exponenciacionMatrizpre(matriz1,exponente):
+    archivo=open("matrices.txt","rb")
+    cargado=pickle.load(archivo)
+    llaves=cargado.keys()
+    if matriz1 in llaves:
+        return exponenciacion(stringint(cargado[matriz1]),exponente)
+    else:
+        campoTexto.tag_config("a",foreground="red")
+        campoTexto.insert(END,"\nError: La matriz no exixte",("a"))
+        
+##Revisar filas y columnas   
+def revisar(matriz,c=0,cont=0):
+    if len(matriz)==cont:
+        if c==0:
+            return True
+        else:
+            return False
+    else:
+        if cont==0:
+            return revisar(matriz,c,cont+1)
+        else:
+            if revisarmatriz(matriz[cont],matriz[cont-1])==True:
+                return revisar(matriz,c,cont+1)
+            else:
+                return revisar(matriz,c+1,cont+1)
+
+def revisarmatriz(lista,lista2):
+    lista=str(lista)
+    lista2=str(lista2)
+    lista2=lista2.split(",")
+    lista=lista.split(",")
+    if len(lista)==len(lista2):
+        return True
+    else:
+        return False
+        
+def acercade():
+    x="OPERMAT(Operaciones sobre Matrices)"
+    y="Versión 1.0"
+    z="Fecha de Creación: Mayo del 2017"
+    a="Autor: Bárbara Gutiérrez Quirós"
+    return [x,y,z,a]
+  
+    
+##String-Int
+def stringint(m1):
+    if m1==[]:
+        return []
+    else:
+        return [enteros(m1[0])]+stringint(m1[1:])
+
+def enteros(x):
+    y=[]
+    x=x.split(",")
+    for i in x:
+        y+=[int(i)]
+    return y
+    
+
+    
