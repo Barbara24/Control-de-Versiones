@@ -1,0 +1,121 @@
+package opermat;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author Bárbara Gutiérrez
+ */
+public class Impresor {
+    
+    public void ImprimirAcercaDe(String mensaje){
+        System.out.println(mensaje);
+        
+    }
+    public void ImprimirMae(ArrayList<ArrayList<Integer>> resultado){
+        int i;
+        for (i=0;i<resultado.size();i++){
+            System.out.println(resultado.get(i));
+        }
+        
+    }
+    
+    public void ImprimirMaf(ArrayList<ArrayList<Double>> resultado){
+        int i;
+        for (i=0;i<resultado.size();i++){
+            System.out.println(resultado.get(i));
+        }
+    }
+    public void ImprimirLee(String comando,String[] datos){
+        System.out.println(datos[0]);
+        int i;
+        int j;
+        int k;
+        for (i=1;i<(datos.length-1);i++){
+            String entrada[];
+            entrada=datos[i].split(",");
+            ArrayList<Integer> resultado;
+            resultado = new ArrayList<>();
+            for (j=0;j<entrada.length;j++){
+               k=Integer.parseInt(entrada[j]);
+               resultado.add(k);   
+            }
+            System.out.println(resultado);
+        }        
+    }
+    
+    public void ImprimirAsig(String comando,String[] datos){
+        System.out.println(comando);
+        int i;
+        int j;
+        int k;
+        for (i=1;i<(datos.length-1);i++){
+            String entrada[];
+            entrada=datos[i].split(",");
+            ArrayList<Integer> resultado;
+            resultado = new ArrayList<>();
+            for (j=0;j<entrada.length;j++){
+               k=Integer.parseInt(entrada[j]);
+               resultado.add(k);   
+            }
+            System.out.println(resultado);
+        } 
+    }
+
+    /**
+     *
+     * @param comando
+     * @param valores
+     */
+    public void ImprimirMatriz(String comando,ArrayList<String> valores){
+        int i;
+        int j;
+        int k;
+        for (i=0;i<(valores.size());i++){
+            String entrada[];
+            entrada=valores.get(i).split(",");
+            ArrayList<Integer> resultado;
+            resultado=new ArrayList<>();
+            for (j=0;j<entrada.length;j++){
+                k=Integer.parseInt(entrada[j]);
+                resultado.add(k);
+            }
+            System.out.println(resultado);
+        }   
+    }
+    
+    public void ImprimirSuma(ArrayList<ArrayList<Integer>> resultado){
+        int i;
+        for(i=0;i<resultado.size();i++){
+            System.out.println(resultado.get(i));
+        }
+    }
+    
+    public void ImprimirGuardar(){
+        System.out.println((char)27 + "[36mEl archivo fue guardado" + (char)27 + "[0m");
+    }
+    public void ImprimirLeerarch(String out,Map<String,ArrayList<String>> dic){
+        int i;
+        for (i=0;i<out.length();i++){
+            String str=out.substring(i);
+            char c=str.charAt(0);
+            if (Character.isAlphabetic(c)){
+                String str2 = Character.toString(c);
+                if (dic.containsKey(str2)){
+                    System.out.println(str2);
+                    ArrayList<String> valores = dic.get(str2);
+                    ImprimirMatriz(str2,valores);
+                }
+                else{
+                    ;
+                }
+            }
+            else {
+               ;
+            }
+        }
+    }
+}
