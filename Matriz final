@@ -1,0 +1,1049 @@
+package opermat;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+
+
+/**
+ *
+ * @author Bárbara Gutiérrez
+ */
+public class Matriz {
+    public String[] datos;
+    public String nombre;
+    
+    /**
+     *
+     * @param nombre
+     * @param datosf
+     * @param datos
+     * @param dic
+     */
+    public void CrearMatriz(String nombre,ArrayList<String>datosf,Map<String,ArrayList<String>> dic,String[]datos){
+        int i;
+        int j;
+        int k;
+        ArrayList<ArrayList<Integer>> resultadof;
+        resultadof = new ArrayList<>();
+        for (i=0;i<(datosf.size());i++){
+            String entrada[];
+            entrada=datosf.get(i).split(",");
+            ArrayList<Integer> resultado;
+            resultado=new ArrayList<>();
+            for (j=0;j<entrada.length;j++){
+                k=Integer.parseInt(entrada[j]);
+                resultado.add(k);
+            }
+            resultadof.add(resultado);
+        }
+        if(revisarMatriz(resultadof)==true){
+            Impresor miImpresor;
+            miImpresor=new Impresor();
+            miImpresor.ImprimirLee(nombre, datos);
+            if(dic.containsKey(nombre)){
+                dic.remove(nombre);
+                dic.put(nombre, datosf);
+
+            }
+            else{
+                dic.put(nombre, datosf);
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz tiene que ser del mismo tamaño" + (char)27 + "[0m");
+        }
+    }
+    
+    public void Asignar(String nombre,ArrayList<String>datosf,Map<String,ArrayList<String>> dic,String[]datos){
+        int i;
+        int j;
+        int k;
+        ArrayList<ArrayList<Integer>> resultadof;
+        resultadof = new ArrayList<>();
+        for (i=0;i<(datosf.size());i++){
+            String entrada[];
+            entrada=datosf.get(i).split(",");
+            ArrayList<Integer> resultado;
+            resultado=new ArrayList<>();
+            for (j=0;j<entrada.length;j++){
+                k=Integer.parseInt(entrada[j]);
+                resultado.add(k);
+            }
+            resultadof.add(resultado);
+        }
+        if(revisarMatriz(resultadof)==true){
+            Impresor miImpresor;
+            miImpresor=new Impresor();
+            miImpresor.ImprimirAsig(nombre, datos);
+            if(dic.containsKey(nombre)){
+                dic.remove(nombre);
+                dic.put(nombre, datosf);
+
+            }
+            else{
+                dic.put(nombre, datosf);
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz tiene que ser del mismo tamaño" + (char)27 + "[0m");
+        }
+    }
+    
+    public void Encontrarvalores(String nombre,Map<String,ArrayList<String>> dic){   
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if(dic.containsKey(nombre)){
+            ArrayList<String> valores;
+            valores = dic.get(nombre);
+            miImpresor.ImprimirMatriz(nombre, valores); 
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz no existe" + (char)27 + "[0m");
+        }
+    }
+    
+    /**
+     *
+     * @param datos
+     * @param dic
+     */
+    public void sumaMatriz (String[] datos,Map<String,ArrayList<String>> dic){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(datos[0])){
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(datos[0]);
+            if (dic.containsKey(datos[1])){
+                ArrayList<String> valoresm2;
+                valoresm2 = dic.get(datos[1]);
+                if (revisar2Matriz(valoresm1,valoresm2)==true){
+                int i;
+                int n1;
+                int n2;
+                int k;
+                int j;
+                ArrayList<ArrayList<Integer>> resultadof;
+                resultadof = new ArrayList<>();
+                for (i=0;i<valoresm1.size();i++){
+                    String entrada1[];
+                    entrada1=valoresm1.get(i).split(",");
+                    String entrada2[];
+                    entrada2=valoresm2.get(i).split(",");
+                    ArrayList<Integer> resultado;
+                    resultado = new ArrayList<>();
+                    for (j=0;j<entrada1.length;j++){
+                        n1=Integer.parseInt(entrada1[j]);
+                        n2=Integer.parseInt(entrada2[j]);
+                        k=n1+n2;
+                        resultado.add(k);
+                    
+                    }
+                    resultadof.add(resultado);
+                }
+                miImpresor.ImprimirSuma(resultadof);
+                }      
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +datos[1]+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +datos[0]+ "\tno existe" + (char)27 + "[0m");
+        }
+    } 
+    
+    
+    /**
+     *
+     * @param m1
+     * @param m2
+     * @return
+     */
+    public boolean revisar2Matriz(ArrayList<String> m1,ArrayList<String> m2){
+        if (m1.size()==m2.size()){
+            if(m1.get(0).length()==m2.get(0).length()){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public boolean revisar2Matrizaux(ArrayList<String> m1,ArrayList<ArrayList<Integer>> m2){
+        if (m1.size()==m2.size()){
+            String[] l = m1.get(0).split(",");
+            if(l.length==m2.get(0).size()){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+    
+    /**
+     *
+     * @param m1
+     * @return
+     */
+    public boolean revisarMatriz(ArrayList<ArrayList<Integer>> m1){
+        int i;
+        int k;
+        int j = 0;
+        k=m1.get(0).size();
+        for(i=1;i<m1.size();i++){
+            if (m1.get(i).size()==k){
+                j++;
+            }
+            else{
+            }
+        }
+        if(j==(m1.size()-1)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    /**
+     *
+     * @param datos
+     * @param dic
+     */
+    public void restaMatriz(String[] datos,Map<String,ArrayList<String>> dic){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(datos[0])){
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(datos[0]);
+            if (dic.containsKey(datos[1])){
+                ArrayList<String> valoresm2;
+                valoresm2 = dic.get(datos[1]);
+                if (revisar2Matriz(valoresm1,valoresm2)==true){
+                int i;
+                int n1;
+                int n2;
+                int k;
+                int j;
+                ArrayList<ArrayList<Integer>> resultadof;
+                resultadof = new ArrayList<>();
+                for (i=0;i<valoresm1.size();i++){
+                    String entrada1[];
+                    entrada1=valoresm1.get(i).split(",");
+                    String entrada2[];
+                    entrada2=valoresm2.get(i).split(",");
+                    ArrayList<Integer> resultado;
+                    resultado = new ArrayList<>();
+                    for (j=0;j<entrada1.length;j++){
+                        n1=Integer.parseInt(entrada1[j]);
+                        n2=Integer.parseInt(entrada2[j]);
+                        k=n1-n2;
+                        resultado.add(k);
+                    
+                    }
+                    resultadof.add(resultado);
+                }
+                miImpresor.ImprimirSuma(resultadof);
+                }      
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +datos[1]+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +datos[0]+ "\tno existe" + (char)27 + "[0m");
+        }
+    }
+    
+    public void multiplicaMatriz(String[] datos,Map<String,ArrayList<String>> dic){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(datos[0])){
+        ArrayList<String> valoresm1;
+        valoresm1 = dic.get(datos[0]);
+            if (dic.containsKey(datos[1])){
+                ArrayList<String> valoresm2;
+                valoresm2 = dic.get(datos[1]);
+                if (valoresm1.size()==valoresm2.get(0).length()){
+                    int i;
+                    int j;
+                    int k;
+                    int n1;
+                    int n2;
+                    int finaln=0;
+                    ArrayList<ArrayList<Integer>> resultadof;
+                    resultadof = new ArrayList<>();
+                    for (i=0;i<valoresm1.size();i++){
+                        String entrada1[];
+                        entrada1=valoresm1.get(i).split(",");
+                        ArrayList<Integer> resultado;
+                        resultado = new ArrayList<>();
+                        for (j=0;j<valoresm2.get(0).length()-1;j++){
+                            finaln=0;
+                            for(k=0;k<valoresm2.size();k++){
+                                String entrada2[];
+                                entrada2=valoresm2.get(k).split(",");
+                                n1=Integer.parseInt(entrada1[k]);
+                                n2=Integer.parseInt(entrada2[j]);
+
+                                finaln+=n1*n2;
+                            }
+                            resultado.add(finaln);
+                        }
+                        resultadof.add(resultado);
+                    }
+                    miImpresor.ImprimirSuma(resultadof);
+                    }
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +datos[1]+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +datos[0]+ "\tno existe" + (char)27 + "[0m");
+        }
+    }
+    
+    public void exponenciacionMatriz(String[] datos,Map<String,ArrayList<String>> dic){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(datos[0])){
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(datos[0]);
+            int i;
+            int k;
+            int n1;
+            int numf;
+            ArrayList<ArrayList<Integer>> resultadof;
+            resultadof = new ArrayList<>();
+            for(i=0;i<valoresm1.size();i++){
+                String entrada1[];
+                entrada1=valoresm1.get(i).split(",");
+                ArrayList<Integer> resultado;
+                resultado = new ArrayList<>();
+                for (k=0;k<entrada1.length;k++){
+                    n1=Integer.parseInt(entrada1[k]);
+                    numf=(int) Math.pow(n1,Integer.parseInt(datos[1]) );   
+                    resultado.add(numf);
+                }
+            resultadof.add(resultado);
+            }
+            miImpresor.ImprimirSuma(resultadof);   
+        }
+        else{
+           System.out.println((char)27 + "[31mLa matriz\t" +datos[0]+ "\tno existe" + (char)27 + "[0m"); 
+        }
+    }
+    
+    public void ascendenteMatriz(String[] datos,Map<String,ArrayList<String>> dic){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(datos[0]);
+            int i;
+            int j;
+            int k;
+            ArrayList<Integer> resultado;
+            resultado = new ArrayList<>();
+            for (i=0;i<valoresm1.size();i++){
+                String entrada1[];
+                entrada1=valoresm1.get(i).split(",");
+                for(j=0;j<entrada1.length;j++){
+                    k=Integer.parseInt(entrada1[j]);
+                    resultado.add(k);
+                }   
+            }
+            int cont1;
+            int cont3;
+            int a;
+            ArrayList<Integer> resultadoordenado;
+            resultadoordenado = new ArrayList<>();
+            for(cont1=0;cont1<resultado.size();cont1++){
+                if(cont1==0){
+                    resultadoordenado.add(resultado.get(0));
+                }
+                else{
+                    a=0;
+                    for(cont3=0;cont3<resultadoordenado.size();cont3++){
+                        if (resultado.get(cont1)>resultadoordenado.get(cont3)){
+                           a++;
+                        }
+                        else{
+                           resultadoordenado.add(cont3, resultado.get(cont1));
+                           break;
+                        }
+                    }
+                    if (a==resultadoordenado.size()){
+                        resultadoordenado.add(resultado.get(cont1));
+                    }
+                }  
+            }
+            int cont2;
+            cont2=0;
+            int b;
+            ArrayList<ArrayList<Integer>> resultadof;
+            resultadof = new ArrayList<>();
+            String entrada3[];
+            entrada3=valoresm1.get(0).split(",");
+            int columna;
+            columna=entrada3.length;         
+            while (cont2<resultadoordenado.size()){
+                ArrayList<Integer> filas;
+                filas = new ArrayList<>();
+                for (b=0;b<columna;b++){
+                    filas.add(resultadoordenado.get(cont2)); 
+                    cont2+=1;
+                }
+                resultadof.add(filas);   
+            }
+            miImpresor.ImprimirSuma(resultadof);
+    }
+    
+    public void descendenteMatriz(String[] datos,Map<String,ArrayList<String>> dic){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(datos[0]);
+            int i;
+            int j;
+            int k;
+            ArrayList<Integer> resultado;
+            resultado = new ArrayList<>();
+            for (i=0;i<valoresm1.size();i++){
+                String entrada1[];
+                entrada1=valoresm1.get(i).split(",");
+                for(j=0;j<entrada1.length;j++){
+                    k=Integer.parseInt(entrada1[j]);
+                    resultado.add(k);
+                }   
+            }
+            int cont1;
+            int cont3;
+            int a;
+            ArrayList<Integer> resultadoordenado;
+            resultadoordenado = new ArrayList<>();
+            for(cont1=0;cont1<resultado.size();cont1++){
+                if(cont1==0){
+                    resultadoordenado.add(resultado.get(0));
+                }
+                else{
+                    a=0;
+                    for(cont3=0;cont3<resultadoordenado.size();cont3++){
+                        if (resultado.get(cont1)<resultadoordenado.get(cont3)){
+                           a++;
+                        }
+                        else{
+                           resultadoordenado.add(cont3, resultado.get(cont1));
+                           break;
+                        }
+                    }
+                    if (a==resultadoordenado.size()){
+                        resultadoordenado.add(resultado.get(cont1));
+                    }
+                }  
+            }
+            int cont2;
+            cont2=0;
+            int b;
+            ArrayList<ArrayList<Integer>> resultadof;
+            resultadof = new ArrayList<>();
+            String entrada3[];
+            entrada3=valoresm1.get(0).split(",");
+            int columna;
+            columna=entrada3.length;         
+            while (cont2<resultadoordenado.size()){
+                ArrayList<Integer> filas;
+                filas = new ArrayList<>();
+                for (b=0;b<columna;b++){
+                    filas.add(resultadoordenado.get(cont2)); 
+                    cont2+=1;
+                }
+                resultadof.add(filas);   
+            }
+            miImpresor.ImprimirSuma(resultadof);  
+    }
+    
+    public void expresionAlgebraica(ArrayList<String> postfija,Map<String,ArrayList<String>> dic, Map<String,ArrayList<ArrayList<Integer>>> dicaux){
+        if (postfija.size()<=3){
+           int i;
+           for (i=0;i<postfija.size();i++){
+               String str=postfija.get(i);
+               char c=str.charAt(0);
+               if ((Character.isAlphabetic(c))||(Character.isWhitespace(c))){
+               }
+               else{
+                   if(postfija.size()==5){
+                       realizarOperacion(postfija.get(4),postfija.get(0),postfija.get(2),dic,dicaux,3);
+                       break;
+                   }
+                   else{
+                       realizarOperacion(postfija.get(i),postfija.get(i-4),postfija.get(i-2),dic,dicaux,0);
+                       String n1 = postfija.get(0);
+                       String naux = "aux";
+                       ArrayList<String> nuevapost;
+                       nuevapost=new ArrayList<>();
+                       nuevapost.add(n1);
+                       nuevapost.add(" ");
+                       nuevapost.add(naux);
+                       int k;
+                       for (k=i+1;k<postfija.size();k++){
+                           nuevapost.add(postfija.get(k));
+                       }
+                       expresionAlgebraica(nuevapost,dic,dicaux);
+                       break;
+                   }
+               }
+           }
+        }
+        else{
+           int i;
+           for (i=0;i<postfija.size();i++){
+               String str=postfija.get(i);
+               char c=str.charAt(0);
+               if ((Character.isAlphabetic(c))||(Character.isWhitespace(c))){
+               }
+               else{
+                   if(postfija.size()==7){
+                       realizarOperacion(postfija.get(6),postfija.get(2),postfija.get(4),dic,dicaux,3);
+                       break;
+                   }
+                   else{
+                       realizarOperacion(postfija.get(i),postfija.get(i-4),postfija.get(i-2),dic,dicaux,0);
+                       String n1 = postfija.get(0);
+                       String naux = "aux";
+                       ArrayList<String> nuevapost;
+                       nuevapost=new ArrayList<>();
+                       nuevapost.add(n1);
+                       nuevapost.add(" ");
+                       nuevapost.add(naux);
+                       int k;
+                       for (k=i+1;k<postfija.size();k++){
+                           nuevapost.add(postfija.get(k));
+                       }
+                       expresionAlgebraica(nuevapost,dic,dicaux);
+                       break;
+                   }
+               }
+           }
+        }
+    }
+    
+    public void realizarOperacion(String op,String m1,String m2,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Matriz miMatriz;
+        miMatriz=new Matriz();
+        System.out.println("llega a las operaciones");
+        switch (op){
+            case "+":
+                if ("aux".equals(m2)){
+                    miMatriz.sumaAux(m1, m2, dic, dicaux,imp);
+                    break;
+                }
+                else if("aux".equals(m1)){
+                    miMatriz.sumaAux(m2, m1, dic, dicaux,imp);
+                    break; 
+                }
+                else{
+                   miMatriz.sumaMatrizop(m1, m2, dic, dicaux,imp);
+                   break;
+                }
+            case "-":
+                if ("aux".equals(m2)){
+                    miMatriz.restaAux(m1, m2, dic, dicaux,imp);
+                    break;
+                }
+                else if("aux".equals(m1)){
+                    miMatriz.restaAux(m2, m1, dic, dicaux,imp);
+                    break;
+                }
+                else{
+                   miMatriz.restaMatrizop(m1, m2, dic, dicaux,imp);
+                   break;
+                }
+            case "*":
+                if ("aux".equals(m2)){
+                    miMatriz.multiplicacionaux(m1, m2, dic, dicaux,imp);
+                    break;
+                }
+                else{
+                   miMatriz.multiplicaMatrizop(m1, m2, dic, dicaux,imp);
+                   break;
+                }
+            case "^":
+                if ("aux".equals(m2)){
+                    miMatriz.exponenciacionauz(m1, m2, dic, dicaux,imp);
+                    break;
+                }
+                else{
+                   miMatriz.exponenciacionMatrizop(m1, m2, dic, dicaux,imp);
+                   break;
+                }
+            default:
+                System.out.println((char)27 + "[31mEl operando no existe" + (char)27 + "[0m");
+        }
+                
+    }
+    
+    public void sumaMatrizop(String m1,String m2,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(m1)){
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(m1);
+            if (dic.containsKey(m2)){
+                ArrayList<String> valoresm2;
+                valoresm2 = dic.get(m2);
+                if (revisar2Matriz(valoresm1,valoresm2)==true){
+                int i;
+                int n1;
+                int n2;
+                int k;
+                int j;
+                ArrayList<ArrayList<Integer>> resultadof;
+                resultadof = new ArrayList<>();
+                for (i=0;i<valoresm1.size();i++){
+                    String entrada1[];
+                    entrada1=valoresm1.get(i).split(",");
+                    String entrada2[];
+                    entrada2=valoresm2.get(i).split(",");
+                    ArrayList<Integer> resultado;
+                    resultado = new ArrayList<>();
+                    for (j=0;j<entrada1.length;j++){
+                        n1=Integer.parseInt(entrada1[j]);
+                        n2=Integer.parseInt(entrada2[j]);
+                        k=n1+n2;
+                        resultado.add(k);
+                    
+                    }
+                    resultadof.add(resultado);
+                }
+                if (imp==3){
+                   miImpresor.ImprimirSuma(resultadof);
+                }
+                else{
+                    if (dic.containsKey("aux")){
+                        dicaux.remove("aux");
+                        dicaux.put("aux", resultadof);
+                    }
+                    else{
+                        dicaux.put("aux", resultadof);
+                    }
+                }
+                }      
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +m2+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +m1+ "\tno existe" + (char)27 + "[0m");
+        }
+    }
+    
+    public void restaMatrizop(String m1,String m2,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux ,Integer imp){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(m1)){
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(m1);
+            if (dic.containsKey(m2)){
+                ArrayList<String> valoresm2;
+                valoresm2 = dic.get(m2);
+                if (revisar2Matriz(valoresm1,valoresm2)==true){
+                int i;
+                int n1;
+                int n2;
+                int k;
+                int j;
+                ArrayList<ArrayList<Integer>> resultadof;
+                resultadof = new ArrayList<>();
+                for (i=0;i<valoresm1.size();i++){
+                    String entrada1[];
+                    entrada1=valoresm1.get(i).split(",");
+                    String entrada2[];
+                    entrada2=valoresm2.get(i).split(",");
+                    ArrayList<Integer> resultado;
+                    resultado = new ArrayList<>();
+                    for (j=0;j<entrada1.length;j++){
+                        n1=Integer.parseInt(entrada1[j]);
+                        n2=Integer.parseInt(entrada2[j]);
+                        k=n1-n2;
+                        resultado.add(k);
+                    
+                    }
+                    resultadof.add(resultado);
+                }
+                if (imp==3){
+                   miImpresor.ImprimirSuma(resultadof);
+                }
+                else{
+                    if (dic.containsKey("aux")){
+                        dicaux.remove("aux");
+                        dicaux.put("aux", resultadof);
+                    }
+                    else{
+                        dicaux.put("aux", resultadof);
+                    }
+                }
+                }      
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +m2+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +m1+ "\tno existe" + (char)27 + "[0m");
+        }
+    }
+    
+    public void multiplicaMatrizop(String m1,String m2,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(m1)){
+        ArrayList<String> valoresm1;
+        valoresm1 = dic.get(m1);
+            if (dic.containsKey(m2)){
+                ArrayList<String> valoresm2;
+                valoresm2 = dic.get(m2);
+                if (valoresm1.size()==valoresm2.get(0).length()){
+                    int i;
+                    int j;
+                    int k;
+                    int n1;
+                    int n2;
+                    int finaln=0;
+                    ArrayList<ArrayList<Integer>> resultadof;
+                    resultadof = new ArrayList<>();
+                    for (i=0;i<valoresm1.size();i++){
+                        String entrada1[];
+                        entrada1=valoresm1.get(i).split(",");
+                        ArrayList<Integer> resultado;
+                        resultado = new ArrayList<>();
+                        for (j=0;j<valoresm2.get(0).length()-1;j++){
+                            finaln=0;
+                            for(k=0;k<valoresm2.size();k++){
+                                String entrada2[];
+                                entrada2=valoresm2.get(k).split(",");
+                                n1=Integer.parseInt(entrada1[k]);
+                                n2=Integer.parseInt(entrada2[j]);
+
+                                finaln+=n1*n2;
+                            }
+                            resultado.add(finaln);
+                        }
+                        resultadof.add(resultado);
+                    }
+                 if (imp==3){
+                   miImpresor.ImprimirSuma(resultadof);
+                }
+                else{
+                    if (dic.containsKey("aux")){
+                        dicaux.remove("aux");
+                        dicaux.put("aux", resultadof);
+                    }
+                    else{
+                        dicaux.put("aux", resultadof);
+                    }
+                }
+                    }
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +m2+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +m1+ "\tno existe" + (char)27 + "[0m");
+        }
+    }
+    
+    public void exponenciacionMatrizop(String m1,String datos,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(m1)){
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(m1);
+            int i;
+            int k;
+            int n1;
+            int numf;
+            ArrayList<ArrayList<Integer>> resultadof;
+            resultadof = new ArrayList<>();
+            for(i=0;i<valoresm1.size();i++){
+                String entrada1[];
+                entrada1=valoresm1.get(i).split(",");
+                ArrayList<Integer> resultado;
+                resultado = new ArrayList<>();
+                for (k=0;k<entrada1.length;k++){
+                    n1=Integer.parseInt(entrada1[k]);
+                    numf=(int) Math.pow(n1,Integer.parseInt(datos) );   
+                    resultado.add(numf);
+                }
+            resultadof.add(resultado);
+            }
+                if (imp==3){
+                   miImpresor.ImprimirSuma(resultadof);
+                }
+                else{
+                    if (dic.containsKey("aux")){
+                        dicaux.remove("aux");
+                        dicaux.put("aux", resultadof);
+                    }
+                    else{
+                        dicaux.put("aux", resultadof);
+                    }
+                }   
+        }
+        else{
+           System.out.println((char)27 + "[31mLa matriz\t" +m1+ "\tno existe" + (char)27 + "[0m"); 
+        }
+    }
+    
+    public void sumaAux(String m1,String m2,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(m1)){
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(m1);
+            if (dicaux.containsKey(m2)){
+                ArrayList<ArrayList<Integer>> valoresm2;
+                valoresm2 = dicaux.get(m2);
+                if (revisar2Matrizaux(valoresm1,valoresm2)==true){
+                int i;
+                int n1;
+                int n2;
+                int k;
+                int j;
+                ArrayList<ArrayList<Integer>> resultadof;
+                resultadof = new ArrayList<>();
+                for (i=0;i<valoresm1.size();i++){
+                    String entrada1[];
+                    entrada1=valoresm1.get(i).split(",");
+                    ArrayList<Integer> entrada2 = valoresm2.get(i);
+                    ArrayList<Integer> resultado;
+                    resultado = new ArrayList<>();
+                    for (j=0;j<entrada1.length;j++){
+                        n1=Integer.parseInt(entrada1[j]);
+                        n2=entrada2.get(j);
+                        k=n1+n2;
+                        resultado.add(k);
+                    
+                    }
+                    resultadof.add(resultado);
+                }
+                if (imp==3){
+                   miImpresor.ImprimirSuma(resultadof);
+                }
+                else{
+                    if (dic.containsKey("aux")){
+                        dicaux.remove("aux");
+                        dicaux.put("aux", resultadof);
+                    }
+                    else{
+                        dicaux.put("aux", resultadof);
+                    }
+                }
+                }      
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +m2+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +m1+ "\tno existe" + (char)27 + "[0m");
+        }
+    }
+    
+    public void restaAux(String m1,String m2,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(m1)){
+            ArrayList<String> valoresm1;
+            valoresm1 = dic.get(m1);
+            if (dicaux.containsKey(m2)){
+                ArrayList<ArrayList<Integer>> valoresm2;
+                valoresm2 = dicaux.get(m2);
+                if (revisar2Matrizaux(valoresm1,valoresm2)==true){
+                int i;
+                int n1;
+                int n2;
+                int k;
+                int j;
+                ArrayList<ArrayList<Integer>> resultadof;
+                resultadof = new ArrayList<>();
+                for (i=0;i<valoresm1.size();i++){
+                    String entrada1[];
+                    entrada1=valoresm1.get(i).split(",");
+                    ArrayList<Integer> entrada2 = valoresm2.get(i);
+                    ArrayList<Integer> resultado;
+                    resultado = new ArrayList<>();
+                    for (j=0;j<entrada1.length;j++){
+                        n1=Integer.parseInt(entrada1[j]);
+                        n2=entrada2.get(j);
+                        k=n1-n2;
+                        resultado.add(k);
+                    
+                    }
+                    resultadof.add(resultado);
+                }
+                if (imp==3){
+                   miImpresor.ImprimirSuma(resultadof);
+                }
+                else{
+                    if (dic.containsKey("aux")){
+                        dicaux.remove("aux");
+                        dicaux.put("aux", resultadof);
+                    }
+                    else{
+                        dicaux.put("aux", resultadof);
+                    }
+                }
+                }      
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +m2+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +m1+ "\tno existe" + (char)27 + "[0m");
+        }
+    }
+    
+    public void multiplicacionaux(String m1,String m2,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dic.containsKey(m1)){
+        ArrayList<String> valoresm1;
+        valoresm1 = dic.get(m1);
+            if (dicaux.containsKey(m2)){
+                ArrayList<ArrayList<Integer>> valoresm2;
+                valoresm2 = dicaux.get(m2);
+                if (valoresm1.size()==valoresm2.get(0).size()){
+                    int i;
+                    int j;
+                    int k;
+                    int n1;
+                    int n2;
+                    int finaln=0;
+                    ArrayList<ArrayList<Integer>> resultadof;
+                    resultadof = new ArrayList<>();
+                    for (i=0;i<valoresm1.size();i++){
+                        String entrada1[];
+                        entrada1=valoresm1.get(i).split(",");
+                        ArrayList<Integer> resultado;
+                        resultado = new ArrayList<>();
+                        for (j=0;j<valoresm2.get(0).size();j++){
+                            finaln=0;
+                            for(k=0;k<valoresm2.size();k++){
+                                ArrayList<Integer> entrada2 = valoresm2.get(k);
+                                n1=Integer.parseInt(entrada1[k]);
+                                n2=entrada2.get(j);
+
+                                finaln+=n1*n2;
+                            }
+                            resultado.add(finaln);
+                        }
+                        resultadof.add(resultado);
+                    }
+                if (imp==3){
+                   miImpresor.ImprimirSuma(resultadof);
+                }
+                else{
+                    if (dic.containsKey("aux")){
+                        dicaux.remove("aux");
+                        dicaux.put("aux", resultadof);
+                    }
+                    else{
+                        dicaux.put("aux", resultadof);
+                    }
+                }
+                    }
+            else{
+                System.out.println((char)27 + "[31mLas matrices tienen que ser del mismo tamaño" + (char)27 + "[0m");
+            }
+        }
+            else{
+                System.out.println((char)27 + "[31mLa matriz\t" +m2+ "\tno existe" + (char)27 + "[0m");
+            }
+        }
+        else{
+            System.out.println((char)27 + "[31mLa matriz\t" +m1+ "\tno existe" + (char)27 + "[0m");
+        }
+    }
+    
+    public void exponenciacionauz(String m1,String datos,Map<String,ArrayList<String>> dic,Map<String,ArrayList<ArrayList<Integer>>> dicaux,Integer imp){
+        Impresor miImpresor;
+        miImpresor=new Impresor();
+        if (dicaux.containsKey(m1)){
+            ArrayList<ArrayList<Integer>> valoresm1;
+            valoresm1 = dicaux.get(m1);
+            int i;
+            int k;
+            int n1;
+            int numf;
+            ArrayList<ArrayList<Integer>> resultadof;
+            resultadof = new ArrayList<>();
+            for(i=0;i<valoresm1.size();i++){
+                ArrayList<Integer> entrada1;
+                entrada1 = valoresm1.get(i);
+                ArrayList<Integer> resultado;
+                resultado = new ArrayList<>();
+                for (k=0;k<entrada1.size();k++){
+                    n1=entrada1.get(k);
+                    numf=(int) Math.pow(n1,Integer.parseInt(datos));   
+                    resultado.add(numf);
+                }
+            resultadof.add(resultado);
+            }
+                if (imp==3){
+                   miImpresor.ImprimirSuma(resultadof);
+                }
+                else{
+                    if (dic.containsKey("aux")){
+                        dicaux.remove("aux");
+                        dicaux.put("aux", resultadof);
+                    }
+                    else{
+                        dicaux.put("aux", resultadof);
+                    }
+                }   
+        }
+        else{
+           System.out.println((char)27 + "[31mLa matriz\t" +m1+ "\tno existe" + (char)27 + "[0m"); 
+        }
+    }
+            
+    
+}
